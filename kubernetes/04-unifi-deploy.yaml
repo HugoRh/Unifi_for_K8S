@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: unifi-controller
+  namespace: unifi
+  labels:
+    k8s-app: unifi-controller
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: unifi-controller
+      labels:
+        k8s-app: unifi-controller
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: unifi-controller
+        image: hrhein/unifi:5.10.17
+        volumeMounts:
+        - name: unifi-storage
+          mountPath: /usr/lib/unifi/data/db
+          subPath: "ubnt/ubnt-unifi-mongodb"
+        - name: unifi-storage
+          mountPath: /var/lib/unifi
+          subPath: "ubnt/ubnt-unifi"
+      volumes:
+      - name: unifi-storage
+        persistentVolumeClaim:
+          claimName:  unifi-disk-pvc

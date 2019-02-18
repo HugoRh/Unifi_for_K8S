@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/frontend-entry-points: https
+  name: unifi-ing
+  namespace: unifi
+spec:
+  rules:
+  - host: unifi.k8s.synology.me
+    http:
+      paths:
+      - backend:
+          serviceName: unifi-svc-https
+          servicePort: 443

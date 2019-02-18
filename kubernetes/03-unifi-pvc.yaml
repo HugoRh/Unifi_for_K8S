@@ -1,0 +1,15 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: unifi-disk-pvc
+  namespace: unifi
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: local-storage
+  selector:
+    matchLabels:
+      name: unifi-pv
+  resources:
+    requests:
+      storage: 5Gi
